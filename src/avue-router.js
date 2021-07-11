@@ -5,22 +5,26 @@ class VueRouter {
     this.$options = options
     this.current = window.location.hash.slice(1) || '/'
     Vue.util.defineReactive(this, 'matchList', [])
-    addEventListener('hashchange', () => {
-      this.current = window.location.hash.slice(1) || '/'
-      this.matchList = []
-      this.match(options.routes)
-    })
-    this.match(options.routes)
+    addEventListener('hashchange', this.onHashChange.bind(this))
+    addEventListener('load', this.onHashChange.bind(this))
+  }
+  onHashChange() {
+    this.current = window.location.hash.slice(1) || '/'
+    this.matchList = []
+    this.match()
   }
   match(routes) {
+    routes = routes || this.$options.routes
     for (const route of routes) {
       if (route.path === '/' && this.current === '/') {
         this.matchList.push(route)
+        return
       }
       if (route.path !== '/' && this.current.indexOf(route.path) !== -1) {
         this.matchList.push(route)
+        if (route.children) this.match(route.children)
+        return
       }
-      if (route.children) this.match(route.children)
     }
   }
 }
@@ -53,12 +57,12 @@ VueRouter.install = function(_Vue) {
   })
   Vue.component('router-view', {
     render(h) {
-      let depth = 0
       this.$data.routerView = true
       let parent = this.$parent
+      let depth = 0
       while (parent) {
-        if (parent.$data && parent.$data.routerView) {
-          console.log(parent)
+        const vnodeData = parent.$data
+        if (vnodeData && vnodeData.routerView) {
           depth++
         }
         parent = parent.$parent
