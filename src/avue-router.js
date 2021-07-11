@@ -3,7 +3,10 @@ let Vue
 class VueRouter {
   constructor(options) {
     this.$options = options
-    this.current = window.location.hash.slice(1) || '/'
+    Vue.util.defineReactive(this, 'current', window.location.hash.slice(1) || '/')
+    addEventListener('hashchange', () => {
+      this.current = window.location.hash.slice(1) || '/'
+    })
   }
 }
 
