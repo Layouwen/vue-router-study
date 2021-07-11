@@ -3,6 +3,7 @@ let Vue
 class VueRouter {
   constructor(options) {
     this.$options = options
+    this.current = window.location.hash.slice(1) || '/'
   }
 }
 
@@ -34,7 +35,10 @@ VueRouter.install = function(_Vue) {
   })
   Vue.component('router-view', {
     render(h) {
-      return h('div', '我是router-view')
+      let component = null
+      const route = this.$router.$options.routes.filter(route => route.path === this.$router.current)[0]
+      if (route) component = route.component
+      return h(component)
     },
   })
 }
