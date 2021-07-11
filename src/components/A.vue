@@ -1,9 +1,9 @@
 <template>
   <div>
     我是A组件
-    <!-- <div>
+    <div>
       <router-view></router-view>
-    </div> -->
+    </div>
   </div>
 </template>
 
