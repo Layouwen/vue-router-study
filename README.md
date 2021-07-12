@@ -14,7 +14,7 @@
 
 ### 最终代码链接
 
-[github 链接](https://github.com/Layouwen/vuex-study)
+[github 链接](https://github.com/Layouwen/vue-router-study)
 
 ## 2、准备测试数据
 
